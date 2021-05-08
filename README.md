@@ -4,4 +4,4 @@ Repositório utilizado para armazenar arquivos para o projeto final de POO em Ja
 
 GRUPO:
 
-Bernardo, Nathan, Matheus, Rafael, Vinicius e Yago.
+Angelo, Bernardo, Nathan, Matheus, Rafael, Vinicius e Yago.
