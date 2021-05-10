@@ -8,7 +8,7 @@ import br.com.serratec.enums.AliquotaINSS;
 import br.com.serratec.enums.AliquotaIR;
 import br.com.serratec.interfaces.CalculoImposto;
 
-public class Funcionario extends Pessoa implements CalculoImposto {
+public class Funcionario extends Pessoa implements CalculoImposto, Comparable<Funcionario> {
 	private double salarioBruto;
 	private double descontoINSS;
 	private double descontoIR;
@@ -44,26 +44,23 @@ public class Funcionario extends Pessoa implements CalculoImposto {
 	}
 
 	@Override
-	public void calcularINSS() {
-
-		AliquotaINSS aliquotaINSS = null;
-		AliquotaINSS valorDeduzir = null;
+	public void calcularINSS() {		
 
 		if (salarioBruto <= 1100) {
-			descontoINSS = (salarioBruto * aliquotaINSS.PRIMEIRA_FAIXA.getAliquotaINSS() / 100)
-					- valorDeduzir.PRIMEIRA_FAIXA.getValorDeduzir();
+			descontoINSS = (salarioBruto * AliquotaINSS.PRIMEIRA_FAIXA.getAliquotaINSS() / 100)
+					- AliquotaINSS.PRIMEIRA_FAIXA.getValorDeduzir();
 		} else if (salarioBruto >= 1100.01 && salarioBruto <= 2203.48) {
-			descontoINSS = (salarioBruto * aliquotaINSS.SEGUNDA_FAIXA.getAliquotaINSS() / 100)
-					- valorDeduzir.SEGUNDA_FAIXA.getValorDeduzir();
+			descontoINSS = (salarioBruto * AliquotaINSS.SEGUNDA_FAIXA.getAliquotaINSS() / 100)
+					- AliquotaINSS.SEGUNDA_FAIXA.getValorDeduzir();
 		} else if (salarioBruto >= 2203.49 && salarioBruto <= 3305.22) {
-			descontoINSS = (salarioBruto * aliquotaINSS.TERCEIRA_FAIXA.getAliquotaINSS() / 100)
-					- valorDeduzir.TERCEIRA_FAIXA.getValorDeduzir();
+			descontoINSS = (salarioBruto * AliquotaINSS.TERCEIRA_FAIXA.getAliquotaINSS() / 100)
+					- AliquotaINSS.TERCEIRA_FAIXA.getValorDeduzir();
 		} else if (salarioBruto >= 3305.23 && salarioBruto <= 6433.57) {
-			descontoINSS = (salarioBruto * aliquotaINSS.QUARTA_FAIXA.getAliquotaINSS() / 100)
-					- valorDeduzir.QUARTA_FAIXA.getValorDeduzir();
+			descontoINSS = (salarioBruto * AliquotaINSS.QUARTA_FAIXA.getAliquotaINSS() / 100)
+					- AliquotaINSS.QUARTA_FAIXA.getValorDeduzir();
 		} else {
-			descontoINSS = (6433.57 * aliquotaINSS.QUARTA_FAIXA.getAliquotaINSS() / 100)
-					- valorDeduzir.QUARTA_FAIXA.getValorDeduzir();
+			descontoINSS = (6433.57 * AliquotaINSS.QUARTA_FAIXA.getAliquotaINSS() / 100)
+					- AliquotaINSS.QUARTA_FAIXA.getValorDeduzir();
 		}
 	}
 
@@ -74,32 +71,35 @@ public class Funcionario extends Pessoa implements CalculoImposto {
 	}
 
 	@Override
-	public void calcularIR() {
-		AliquotaIR aliquotaIR = null;
-		AliquotaIR valorDeduzir = null;
+	public void calcularIR() {	
 
 		double baseDeCalculo = obterBaseDeCalculo();
 		if (baseDeCalculo < 1903.98) {
-			descontoIR = (baseDeCalculo * aliquotaIR.PRIMEIRA_FAIXA.getAliquotaIR() / 100)
-					- valorDeduzir.PRIMEIRA_FAIXA.getValorDeduzir();
+			descontoIR = (baseDeCalculo * AliquotaIR.PRIMEIRA_FAIXA.getAliquotaIR() / 100)
+					- AliquotaIR.PRIMEIRA_FAIXA.getValorDeduzir();
 		} else if (baseDeCalculo >= 1903.98 && baseDeCalculo < 2826.66) {
-			descontoIR = (baseDeCalculo * aliquotaIR.SEGUNDA_FAIXA.getAliquotaIR() / 100)
-					- valorDeduzir.SEGUNDA_FAIXA.getValorDeduzir();
+			descontoIR = (baseDeCalculo * AliquotaIR.SEGUNDA_FAIXA.getAliquotaIR() / 100)
+					- AliquotaIR.SEGUNDA_FAIXA.getValorDeduzir();
 		} else if (baseDeCalculo >= 2826.66 && baseDeCalculo < 3751.06) {
-			descontoIR = (baseDeCalculo * aliquotaIR.TERCEIRA_FAIXA.getAliquotaIR() / 100)
-					- valorDeduzir.TERCEIRA_FAIXA.getValorDeduzir();
+			descontoIR = (baseDeCalculo * AliquotaIR.TERCEIRA_FAIXA.getAliquotaIR() / 100)
+					- AliquotaIR.TERCEIRA_FAIXA.getValorDeduzir();
 		} else if (baseDeCalculo >= 3751.06 && baseDeCalculo < 4664.68) {
-			descontoIR = (baseDeCalculo * aliquotaIR.QUARTA_FAIXA.getAliquotaIR() / 100)
-					- valorDeduzir.QUARTA_FAIXA.getValorDeduzir();
+			descontoIR = (baseDeCalculo * AliquotaIR.QUARTA_FAIXA.getAliquotaIR() / 100)
+					- AliquotaIR.QUARTA_FAIXA.getValorDeduzir();
 		} else {
-			descontoIR = (baseDeCalculo * aliquotaIR.QUINTA_FAIXA.getAliquotaIR() / 100)
-					- valorDeduzir.QUINTA_FAIXA.getValorDeduzir();
+			descontoIR = (baseDeCalculo * AliquotaIR.QUINTA_FAIXA.getAliquotaIR() / 100)
+					- AliquotaIR.QUINTA_FAIXA.getValorDeduzir();
 		}
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + "Funcionario [salarioBruto=" + salarioBruto + ", dependentes=" + dependentes + "]";
+	}
+
+	@Override
+	public int compareTo(Funcionario o) {		
+		return this.cpf.compareToIgnoreCase(o.getCpf());
 	}
 
 }

@@ -4,8 +4,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import br.com.serratec.enums.TipoDependente;
+import br.com.serratec.exception.DependenteException;
 
-public class Dependente extends Pessoa {
+public class Dependente extends Pessoa implements Comparable<Dependente> {
 
 	private TipoDependente parentesco;
 
@@ -30,10 +31,17 @@ public class Dependente extends Pessoa {
 		}else {
 			throw new DependenteException("O dependente não pode ter mais de 18 anos.");
 		}		
-	}
+	}	
 
 	@Override
 	public String toString() {
 		return super.toString() + "Dependente [parentesco=" + parentesco + "]";
 	}
+
+	@Override
+	public int compareTo(Dependente o) {		
+		return this.cpf.compareToIgnoreCase(o.getCpf());
+	}
+
+
 }

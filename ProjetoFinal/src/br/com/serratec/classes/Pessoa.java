@@ -3,9 +3,11 @@ package br.com.serratec.classes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import br.com.serratec.exception.CPFException;
+
 public abstract class Pessoa {
 	private String nome;
-	private String cpf;
+	protected String cpf;
 	private LocalDate dataNascimento;
 
 	public Pessoa(String nome, String cpf, LocalDate dataNascimento) {
@@ -46,7 +48,16 @@ public abstract class Pessoa {
 			throw new CPFException("CPF inválido");
 		}
 	}
-
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(this.cpf.equalsIgnoreCase(((Pessoa)obj).getCpf())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	@Override
 	public String toString() {
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
