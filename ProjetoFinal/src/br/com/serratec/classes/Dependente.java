@@ -43,5 +43,4 @@ public class Dependente extends Pessoa implements Comparable<Dependente> {
 		return this.cpf.compareToIgnoreCase(o.getCpf());
 	}
 
-
 }

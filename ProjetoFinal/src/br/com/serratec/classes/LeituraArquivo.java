@@ -30,8 +30,16 @@ public class LeituraArquivo {
 						LocalDate dataAniversario = LocalDate.parse(dadosDependente[2]);
 						TipoDependente parentesco = TipoDependente.valueOf(dadosDependente[3]);
 						Dependente dependente = new Dependente(nomeDependente, cpfDependente, dataAniversario, parentesco);						
+						try {
 						dependente.verificarIdade();
 						dependente.verificarCPF(cpfDependente);
+						}catch(DependenteException e) {
+							System.out.println(dependente.getNome() + " não foi adicionado pois possui idade superior a 18 anos.");
+							continue;							
+						}catch(CPFException e) {
+							dependente.setCpf("000000000001");
+							System.out.println("O CPF do dependente " + dependente.getNome() + " possui mais de 11 digitos. foi atribuido o valor padrão de "+ dependente.getCpf()+ " Faça a alteração no menu.");
+						}						
 						if(funcionario.getDependente().contains(dependente)) {
 							System.out.println("O dependente " + dependente.getNome() + " já foi cadastrado.");
 						}else {
@@ -41,11 +49,16 @@ public class LeituraArquivo {
 					} else {					
 						 String[] dadosFuncionario = linha.split(";");
 						 String nomeFuncionario = dadosFuncionario[0];					
-						 String cpfFuncionario = dadosFuncionario[1];
+						 String cpfFuncionario = dadosFuncionario[1];						 
 						 LocalDate dataAniversario = LocalDate.parse(dadosFuncionario[2]);
 						 double salarioBruto = Double.parseDouble(dadosFuncionario[3]);
 						 funcionario = new Funcionario(nomeFuncionario,cpfFuncionario, dataAniversario, salarioBruto); 
+						 try {
 						 funcionario.verificarCPF(cpfFuncionario);
+						 }catch(CPFException e){
+							 funcionario.setCpf("00000000002");
+							 System.out.println("O CPF do funcionario " + funcionario.getNome() + " possui mais de 11 digitos. foi atribuido o valor padrão de "+ funcionario.getCpf()+ " Faça a alteração no menu.");
+						 }
 					 }
 				} else {
 					if(funcionario != null) {
@@ -62,11 +75,6 @@ public class LeituraArquivo {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {			
 			e.printStackTrace();
-		}catch(DependenteException e) {
-			System.out.println("Verifique o arquivo! O sistema não aceita dependentes com mais de 18 anos!");
-		}catch(CPFException e) {
-			System.out.println("Verifique o arquivo! O CPF deve ter 11 digitos");
-		}
-	
+		}	
 	}
 }

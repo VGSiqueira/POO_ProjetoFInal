@@ -91,6 +91,9 @@ public class Funcionario extends Pessoa implements CalculoImposto, Comparable<Fu
 					- AliquotaIR.QUINTA_FAIXA.getValorDeduzir();
 		}
 	}
+	public double calcularSalarioLiquido() {		
+		return salarioBruto - descontoINSS - descontoIR;
+	}
 
 	@Override
 	public String toString() {

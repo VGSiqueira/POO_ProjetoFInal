@@ -8,13 +8,12 @@ import java.util.List;
 
 public class CriacaoArquivo {
 	public void criarArquivo(List<Funcionario> funcionarios) {
-		try {
+		try {			
 			OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream("dados.csv"));
 			for (Funcionario f : funcionarios) {
-				for (Dependente d : f.getDependente())
-					out.append(String.format("Dependente: %s%n", d));
-			}
-			out.append("Criado em 10/05/2021\n\n");
+				f.calcularIR();
+				out.append(String.format("%s;%s;%.2f;%.2f;%.2f%n", f.getNome(), f.getCpf(), f.getDescontoINSS(),f.getDescontoIR(), f.calcularSalarioLiquido()));
+			}			
 			out.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
