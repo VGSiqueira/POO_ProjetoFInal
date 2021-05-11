@@ -1,4 +1,4 @@
-package br.com.serratec.classes;
+package br.com.serratec.servicos;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import br.com.serratec.classes.Dependente;
+import br.com.serratec.classes.Funcionario;
 import br.com.serratec.enums.TipoDependente;
 import br.com.serratec.exception.CPFException;
 import br.com.serratec.exception.DependenteException;
@@ -72,7 +74,7 @@ public class LeituraArquivo {
 			}	
 			funcionarios.add(funcionario);
 		} catch (FileNotFoundException e) {			
-			e.printStackTrace();
+			System.out.println("Arquivo não encontrado, verifique o caminho informado.");;
 		} catch (UnsupportedEncodingException e) {			
 			e.printStackTrace();
 		}	

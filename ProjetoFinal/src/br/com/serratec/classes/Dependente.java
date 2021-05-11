@@ -35,7 +35,7 @@ public class Dependente extends Pessoa implements Comparable<Dependente> {
 
 	@Override
 	public String toString() {
-		return super.toString() + "Dependente [parentesco=" + parentesco + "]";
+		return "Dependente - " + super.toString() + ", Parentesco: " + parentesco;
 	}
 
 	@Override

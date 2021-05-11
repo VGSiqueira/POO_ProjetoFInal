@@ -42,7 +42,7 @@ public abstract class Pessoa {
 	}
 	
 	public boolean verificarCPF (String cpf) {
-		if(cpf.length() <= 11) {
+		if(cpf.length() == 11) {
 			return true;
 		}else {
 			throw new CPFException("CPF inválido");
@@ -61,7 +61,7 @@ public abstract class Pessoa {
 	@Override
 	public String toString() {
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return String.format("Nome: %s  CPF: %s Data de Nascimento: %s", nome, cpf, dataNascimento.format(df));
+		return String.format("Nome: %s,  CPF: %s, Data de Nascimento: %s", nome, cpf, dataNascimento.format(df));
 	}
 
 }

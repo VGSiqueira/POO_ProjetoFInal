@@ -97,7 +97,7 @@ public class Funcionario extends Pessoa implements CalculoImposto, Comparable<Fu
 
 	@Override
 	public String toString() {
-		return super.toString() + "Funcionario [salarioBruto=" + salarioBruto + ", dependentes=" + dependentes + "]";
+		return "Funcionario - " + super.toString() + ", Salário Bruto: " + salarioBruto;
 	}
 
 	@Override
