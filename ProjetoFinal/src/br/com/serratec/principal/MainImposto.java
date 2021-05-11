@@ -69,6 +69,7 @@ public class MainImposto {
 						func.verificarCPF(cpfFuncionario);
 						if (!funcionarios.contains(func)) {
 							funcionarios.add(func);
+							System.out.println("Funcionário adicionado com sucesso!");
 						}
 					} catch (CPFException e) {
 						func.setCpf("00000000003");
@@ -152,6 +153,7 @@ public class MainImposto {
 							System.out.println("Informe o novo nome: ");
 							String novoNome = scan.nextLine();
 							d.setNome(novoNome);
+							System.out.println("Nome alterado!");
 							break;
 						case 2:
 							System.out.println("Informe o novo CPF: ");
@@ -159,6 +161,7 @@ public class MainImposto {
 							try {
 								d.verificarCPF(novoCpf);
 								d.setCpf(novoCpf);
+								System.out.println("CPF alterado!");
 							} catch (CPFException e) {
 								System.out.println(
 										"O CPF do dependente " + d.getNome() + " está em um formato inválido.");
@@ -171,6 +174,7 @@ public class MainImposto {
 							try {
 								LocalDate dataNascimento = LocalDate.parse(nascimento, df);
 								d.setDataNascimento(dataNascimento);
+								System.out.println("Data de nascimento alterada!");
 							} catch (DateTimeParseException e) {
 								System.out.println("Data no formato inválido.");
 							}
@@ -180,6 +184,7 @@ public class MainImposto {
 							String tipo = scan.nextLine();
 							TipoDependente parentesco = TipoDependente.valueOf(tipo);
 							d.setParentesco(parentesco);
+							System.out.println("Parentesco alterado!");
 							break;
 						case 5:
 							break;
@@ -211,6 +216,7 @@ public class MainImposto {
 						System.out.println("Informe o novo nome: ");
 						String novoNome = scan.nextLine();
 						f.setNome(novoNome);
+						System.out.println("Nome alterado!");
 						break;
 					case 2:
 						System.out.println("Informe o novo CPF: ");
@@ -218,6 +224,7 @@ public class MainImposto {
 						try {
 							f.verificarCPF(novoCpf);
 							f.setCpf(novoCpf);
+							System.out.println("CPF alterado!");
 						} catch (CPFException e) {
 							System.out.println("O CPF do funcionário " + f.getNome() + " está em um formato inválido.");
 						}
@@ -229,6 +236,7 @@ public class MainImposto {
 						try {
 							LocalDate dataNascimento = LocalDate.parse(nascimento, df);
 							f.setDataNascimento(dataNascimento);
+							System.out.println("Data de nascimento alterada!");
 						} catch (DateTimeParseException e) {
 							System.out.println("Data no formato inválido.");
 						}
@@ -238,6 +246,7 @@ public class MainImposto {
 						try {
 							double salario = scan.nextDouble();
 							f.setSalarioBruto(salario);
+							System.out.println("Salário alterado!");
 						} catch (InputMismatchException e) {
 							System.out.println("Salário inválido.");
 						}
@@ -281,12 +290,16 @@ public class MainImposto {
 				try {
 					dep.verificarIdade();
 					dep.verificarCPF(cpfDependente);
+					f.adicionarDependente(dep);
+					System.out.println("Dependente adicionado com sucesso!");
 				} catch (DependenteException e) {
 					System.out.println(dep.getNome() + " não pode ser um dependente, pois tem mais de 18 anos.");
 				} catch (CPFException e) {
-					dep.setCpf("12345678985");
+					dep.setCpf("00000000005");
+					f.adicionarDependente(dep);
+					System.out.println("O CPF do dependente " + dep.getNome() + " possui mais de 11 digitos. foi atribuido o valor padrão de "+ dep.getCpf()+ " Faça a alteração no menu.");
 				}
-				f.adicionarDependente(dep);
+				
 			}
 		}
 	}

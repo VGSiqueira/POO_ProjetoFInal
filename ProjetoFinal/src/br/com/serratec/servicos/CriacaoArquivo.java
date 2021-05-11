@@ -18,6 +18,7 @@ public class CriacaoArquivo {
 				out.append(String.format("%s;%s;%.2f;%.2f;%.2f%n", f.getNome(), f.getCpf(), f.getDescontoINSS(),f.getDescontoIR(), f.calcularSalarioLiquido()));
 			}			
 			out.close();
+			System.out.println("Arquivo criado com sucesso! verifique o seu diretório.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
