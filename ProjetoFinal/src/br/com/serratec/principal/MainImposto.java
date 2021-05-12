@@ -18,42 +18,48 @@ import br.com.serratec.servicos.LeituraArquivo;
 
 public class MainImposto {
 	public static void main(String[] args) {
+
 		Scanner scan = null;
 		List<Funcionario> funcionarios = new ArrayList<>();
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 		scan = new Scanner(System.in);
-		System.out.println(
-				"Informe o caminho do arquivo para leitura (Ex.: E:\\Documentos\\Leitura\\NomeDoArquivo.txt) : ");
-		String caminhoArquivo = scan.nextLine();
-
-		LeituraArquivo ler = new LeituraArquivo();
-		ler.lerArquivo(funcionarios, scan, caminhoArquivo);
 
 		int opcao = 0;
+
 		do {
-			System.out.println("\n1 - Criar arquivo com os dados dos funcionários:");
-			System.out.println("2 - Adicionar funcionário:");
-			System.out.println("3 - Adicionar dependente:");
-			System.out.println("4 - Excluir Funcionário:");
-			System.out.println("5 - Excluir Dependente:");
-			System.out.println("6 - Alterar Funcionário:");
-			System.out.println("7 - Alterar Dependente:");
-			System.out.println("8 - Ordenar:");
-			System.out.println("9 - Exibir funcionários e dependentes:");
-			System.out.println("10 - Sair:");
+			System.out.println("\n1 - Carregar arquivo com dados dos funcionários:");
+			System.out.println("2 - Criar arquivo com os dados dos funcionários:");
+			System.out.println("3 - Adicionar funcionário:");
+			System.out.println("4 - Adicionar dependente:");
+			System.out.println("5 - Excluir Funcionário:");
+			System.out.println("6 - Excluir Dependente:");
+			System.out.println("7 - Alterar Funcionário:");
+			System.out.println("8 - Alterar Dependente:");
+			System.out.println("9 - Dados dos funcionários:");
+			System.out.println("10 - Exibir funcionários e dependentes:");
+			System.out.println("11 - Sair:");
 
 			opcao = scan.nextInt();
 			scan.nextLine();
+
 			switch (opcao) {
 			case 1:
+				System.out.println(
+						"Informe o caminho do arquivo para leitura (Ex.: E:\\Documentos\\Leitura\\NomeDoArquivo.txt) : ");
+				String caminhoArquivo = scan.nextLine();
+
+				LeituraArquivo ler = new LeituraArquivo();
+				ler.lerArquivo(funcionarios, scan, caminhoArquivo);
+				break;
+			case 2:
 				CriacaoArquivo criar = new CriacaoArquivo();
 				System.out.println(
 						"Digite o caminho onde deseja salvar o arquivo (Ex.: E:\\Documentos\\Leitura\\NomeDoArquivo.txt):");
 				String salvarArquivo = scan.nextLine();
 				criar.criarArquivo(funcionarios, salvarArquivo);
 				break;
-			case 2:
+			case 3:
 				try {
 					System.out.println("Informe o nome do funcionário");
 					String nomeFuncionario = scan.nextLine();
@@ -65,6 +71,7 @@ public class MainImposto {
 					System.out.println("Informe o salário do funcionário");
 					double salario = scan.nextDouble();
 					Funcionario func = new Funcionario(nomeFuncionario, cpfFuncionario, dataNascimento, salario);
+
 					try {
 						func.verificarCPF(cpfFuncionario);
 						if (!funcionarios.contains(func)) {
@@ -80,19 +87,21 @@ public class MainImposto {
 								+ " Faça a alteração no menu.");
 						funcionarios.add(func);
 					}
+
 				} catch (DateTimeParseException e) {
 					System.out.println("Data inválida. O formato correto é dd/MM/yyy.");
 				} catch (InputMismatchException e) {
 					System.out.println("Salário inválido.");
 				}
+
 				scan.nextLine();
 				break;
-			case 3:
+			case 4:
 				System.out.println("Informe o CPF do funcionário");
 				String cpfFuncDep = scan.nextLine();
 				incluirDependente(funcionarios, scan, cpfFuncDep);
 				break;
-			case 4:
+			case 5:
 				System.out.println("Informe o CPF do funcionário a remover");
 				String funcExcluir = scan.nextLine();
 				if (funcionarios.removeIf(r -> r.getCpf().equalsIgnoreCase(funcExcluir))) {
@@ -101,53 +110,61 @@ public class MainImposto {
 					System.out.println("Funcionário não cadastrado.");
 				}
 				break;
-			case 5:
+			case 6:
 				System.out.println("Informe o CPF do dependente a excluir");
 				String excluir = scan.nextLine();
-				for (Funcionario f : funcionarios) {
-					if (f.getDependente().removeIf(r -> r.getCpf().equalsIgnoreCase(excluir))) {
-						System.out.println("Dependente excluído com sucesso!");
-					} else {
-						System.out.println("Dependente não cadastrado.");
-					}
-
-					break;
+				for(Funcionario f : funcionarios) {
+					for(Dependente d : f.getDependente()) {
+						if(d.getCpf().equals(excluir)) {
+							f.getDependente().removeIf(r -> r.getCpf().equalsIgnoreCase(excluir));
+							System.out.println("Dependente excluído com sucesso!");	
+							break;
+						}
+						
+					}					
 				}
+							
 				break;
-			case 6:
+			case 7:
 				System.out.println("Informe o CPF do funcionário");
 				String cpfAlterar = scan.nextLine();
 				alterarFuncionario(scan, funcionarios, cpfAlterar);
 				break;
-			case 7:
+			case 8:
 				System.out.println("Informe o CPF do dependente a alterar: ");
 				String cpfDep = scan.nextLine();
 				alterarDepedente(scan, funcionarios, cpfDep);
 				break;
 			case 9:
 				for (Funcionario f : funcionarios) {
-					System.out.println(f);
+					f.calcularIR();
+					System.out.println(String.format(
+							"Nome: %s, Salário Bruto: R$%.2f, INSS: R$%.2f, IR: R$%.2f, Salário Líquido: R$%.2f%n",
+							f.getNome(), f.getSalarioBruto(), f.getDescontoINSS(), f.getDescontoIR(),
+							f.calcularSalarioLiquido()));
+				}
+				break;
+			case 10:
+				for (Funcionario f : funcionarios) {
+					System.out.println("\n" + f);
 					for (Dependente d : f.getDependente()) {
 						System.out.println(d);
 					}
 				}
-			case 10:
+			case 11:
 				break;
 			default:
 				System.out.println("Opção inválida.");
 			}
 
-		} while (opcao != 10);
-
-		for (Funcionario f : funcionarios) {
-			f.calcularIR();
-		}
+		} while (opcao != 11);
 	}
 
 	private static void alterarDepedente(Scanner scan, List<Funcionario> funcionarios, String cpfDep) {
 		for (Funcionario f : funcionarios) {
 			for (Dependente d : f.getDependente()) {
 				if (d.getCpf().equalsIgnoreCase(cpfDep)) {
+
 					int opcao = 0;
 
 					do {
@@ -223,9 +240,11 @@ public class MainImposto {
 	private static void alterarFuncionario(Scanner scan, List<Funcionario> funcionarios, String cpfAlterar) {
 		for (Funcionario f : funcionarios) {
 			if (f.getCpf().equalsIgnoreCase(cpfAlterar)) {
+
 				int opcao = 0;
+
 				do {
-					System.out.println("1 - Alterar nome:");
+					System.out.println("\n1 - Alterar nome:");
 					System.out.println("2 - Alterar CPF:");
 					System.out.println("3 - Alterar data de nascimento:");
 					System.out.println("4 - Alterar salário:");
@@ -279,7 +298,6 @@ public class MainImposto {
 						break;
 					default:
 						System.out.println("Opção inválida.");
-
 					}
 				} while (opcao != 5);
 			}
@@ -295,11 +313,10 @@ public class MainImposto {
 					String nomeDependente = scan.nextLine();
 					System.out.println("Informe o CPF do dependente");
 					String cpfDependente = scan.nextLine();
-					System.out.println("Informe a dadata de nascimento do dependente");
+					System.out.println("Informe a data de nascimento do dependente");
 					String data = scan.nextLine();
 					DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 					LocalDate dataNascimento = LocalDate.parse(data, df);
-
 					System.out.println("Informe o parentesco do dependente: 1 - FILHO; 2 - SOBRINHO; 3 - OUTRO");
 					int tipo = scan.nextInt();
 					scan.nextLine();
@@ -314,6 +331,7 @@ public class MainImposto {
 						System.out.println("Parentesco inválido.");
 						break;
 					}
+
 					dep = new Dependente(nomeDependente, cpfDependente, dataNascimento, tipoDependente);
 
 					dep.verificarIdade();
@@ -323,7 +341,7 @@ public class MainImposto {
 						System.out.println("Dependente adicionado com sucesso!");
 					} else {
 						System.out.println("Dependente já cadastrado.");
-					}					
+					}
 				} catch (DependenteException e) {
 					System.out.println(dep.getNome() + " não pode ser um dependente, pois tem mais de 18 anos.");
 				} catch (CPFException e) {
